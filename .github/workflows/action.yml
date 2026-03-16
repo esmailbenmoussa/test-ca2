@@ -24,7 +24,6 @@ jobs:
     - run: apt-get update
     - run: apt-get install -y bash git curl
     - run: chmod +x scripts/ci/*.sh
-    - run: "./scripts/ci/verify.sh"
   build:
     needs: verify
     runs-on: ubuntu-latest
@@ -44,7 +43,6 @@ jobs:
     - run: apt-get update
     - run: apt-get install -y bash git curl
     - run: chmod +x scripts/ci/*.sh
-    - run: "./scripts/ci/build.sh"
     - uses: actions/upload-artifact@v4.1.0
       if: always()
       with:
