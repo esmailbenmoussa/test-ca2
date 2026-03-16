@@ -12,8 +12,6 @@ jobs:
       image: ubuntu:24.04
     if: ${{ github.ref }} || ${{ github.event_name }} == "merge_request_event"
     timeout-minutes: 60
-    env:
-      CI_PROJECT_DIR_CUSTOM: "${{ github.workspace }}"
     steps:
     - uses: actions/checkout@v4.1.0
       with:
@@ -34,8 +32,6 @@ jobs:
       image: ubuntu:24.04
     if: ${{ github.ref }} || ${{ github.event_name }} == "merge_request_event"
     timeout-minutes: 60
-    env:
-      CI_PROJECT_DIR_CUSTOM: "${{ github.workspace }}"
     steps:
     - uses: actions/checkout@v4.1.0
       with:
