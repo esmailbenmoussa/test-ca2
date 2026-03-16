@@ -24,3 +24,19 @@ jobs:
   ci:
     needs: test
     uses: ./.github/workflows/ci-template.yml
+
+  cd:
+    runs-on: ubuntu-latest
+    needs: ci
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to staging
+        id: deploy
+        uses: ./.github/actions/deploy
+        with:
+          environment: staging
+      - name: Show deployment info
+        run: |
+          echo "Deployed to: ${{ steps.deploy.outputs.deploy-url }}"
+          echo "Status: ${{ steps.deploy.outputs.status }}"
+          echo "Timestamp: ${{ steps.deploy.outputs.timestamp }}"
