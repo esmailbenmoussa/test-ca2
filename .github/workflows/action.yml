@@ -21,9 +21,6 @@ jobs:
       with:
         path: ".cache/"
         key: "${{ github.ref }}"
-    - run: apt-get update
-    - run: apt-get install -y bash git curl
-    - run: chmod +x scripts/ci/*.sh
   build:
     needs: verify
     runs-on: ubuntu-latest
@@ -40,9 +37,6 @@ jobs:
       with:
         path: ".cache/"
         key: "${{ github.ref }}"
-    - run: apt-get update
-    - run: apt-get install -y bash git curl
-    - run: chmod +x scripts/ci/*.sh
     - uses: actions/upload-artifact@v4.1.0
       if: always()
       with:
