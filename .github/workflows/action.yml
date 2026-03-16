@@ -1,0 +1,57 @@
+name: actions-importer/actions-importer
+on:
+  push:
+  workflow_dispatch:
+concurrency:
+  group: "${{ github.ref }}"
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:24.04
+    if: ${{ github.ref }} || ${{ github.event_name }} == "merge_request_event"
+    timeout-minutes: 60
+    env:
+      CI_PROJECT_DIR_CUSTOM: "${{ github.workspace }}"
+    steps:
+    - uses: actions/checkout@v4.1.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/cache@v3.3.2
+      with:
+        path: ".cache/"
+        key: "${{ github.ref }}"
+    - run: apt-get update
+    - run: apt-get install -y bash git curl
+    - run: chmod +x scripts/ci/*.sh
+    - run: "./scripts/ci/verify.sh"
+  build:
+    needs: verify
+    runs-on: ubuntu-latest
+    container:
+      image: ubuntu:24.04
+    if: ${{ github.ref }} || ${{ github.event_name }} == "merge_request_event"
+    timeout-minutes: 60
+    env:
+      CI_PROJECT_DIR_CUSTOM: "${{ github.workspace }}"
+    steps:
+    - uses: actions/checkout@v4.1.0
+      with:
+        fetch-depth: 20
+        lfs: true
+    - uses: actions/cache@v3.3.2
+      with:
+        path: ".cache/"
+        key: "${{ github.ref }}"
+    - run: apt-get update
+    - run: apt-get install -y bash git curl
+    - run: chmod +x scripts/ci/*.sh
+    - run: "./scripts/ci/build.sh"
+    - uses: actions/upload-artifact@v4.1.0
+      if: always()
+      with:
+        name: "${{ github.job }}"
+        retention-days: 7
+        path: dist/
