@@ -8,38 +8,16 @@ concurrency:
 jobs:
   verify:
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu:24.04
-    if: ${{ github.ref }} || ${{ github.event_name }} == "merge_request_event"
     timeout-minutes: 60
     steps:
     - uses: actions/checkout@v4.1.0
-      with:
-        fetch-depth: 20
-        lfs: true
     - uses: actions/cache@v3.3.2
-      with:
-        path: ".cache/"
-        key: "${{ github.ref }}"
   build:
     needs: verify
     runs-on: ubuntu-latest
-    container:
-      image: ubuntu:24.04
-    if: ${{ github.ref }} || ${{ github.event_name }} == "merge_request_event"
     timeout-minutes: 60
     steps:
     - uses: actions/checkout@v4.1.0
-      with:
-        fetch-depth: 20
-        lfs: true
     - uses: actions/cache@v3.3.2
-      with:
-        path: ".cache/"
-        key: "${{ github.ref }}"
     - uses: actions/upload-artifact@v4.1.0
-      if: always()
-      with:
-        name: "${{ github.job }}"
-        retention-days: 7
-        path: dist/
+
