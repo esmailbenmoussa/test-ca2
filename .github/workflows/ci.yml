@@ -4,6 +4,16 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        type: choice
+        options:
+          - dev
+          - staging
+          - prod
+        default: 'dev'
 
 jobs:
   build:
@@ -30,11 +40,11 @@ jobs:
     needs: ci
     steps:
       - uses: actions/checkout@v4
-      - name: Deploy to staging
+      - name: Deploy to ${{ inputs.environment || 'dev' }}
         id: deploy
         uses: ./.github/actions/deploy
         with:
-          environment: staging
+          environment: ${{ inputs.environment || 'dev' }}
       - name: Show deployment info
         run: |
           echo "Deployed to: ${{ steps.deploy.outputs.deploy-url }}"
