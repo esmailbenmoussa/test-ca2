@@ -22,4 +22,5 @@ jobs:
       - run: echo "Tests passed"
 
   ci:
+    needs: test
     uses: ./.github/workflows/ci-template.yml
