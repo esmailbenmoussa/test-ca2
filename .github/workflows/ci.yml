@@ -26,3 +26,8 @@ jobs:
           node-version: '20'
       - run: npm ci
       - run: npm test
+
+  ci:
+    uses: ./.github/workflows/ci-template.yml
+    with:
+      node-version: '18'
