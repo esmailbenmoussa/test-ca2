@@ -1,17 +1,50 @@
-# Welcome to MkDocs
+# Test Composite Actions
 
-For full documentation visit [mkdocs.org](https://www.mkdocs.org).
+This repository contains reusable GitHub Actions components for CI/CD pipelines.
 
-## Commands
+## Overview
 
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs -h` - Print help message and exit.
+This project demonstrates how to create and use:
 
-## Project layout
+- **Composite Actions** - Reusable action steps that can be shared across workflows
+- **Reusable Workflows** - Complete workflow templates that can be called from other workflows
 
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+## Repository Structure
+
+```
+.github/
+├── actions/
+│   └── deploy/              # Composite action for deployments
+│       └── action.yml
+└── workflows/
+    ├── ci.yml               # Main CI workflow
+    ├── ci-template.yml      # Reusable workflow template
+    └── deploy-docs.yml      # Documentation deployment
+```
+
+## Quick Start
+
+### Using the Deploy Action
+
+```yaml
+- name: Deploy
+  uses: ./.github/actions/deploy
+  with:
+    environment: dev
+```
+
+### Calling the CI Template Workflow
+
+```yaml
+jobs:
+  ci:
+    uses: ./.github/workflows/ci-template.yml
+```
+
+## Components
+
+| Component | Type | Description |
+|-----------|------|-------------|
+| [Deploy](composite-actions/deploy.md) | Composite Action | Deploys to target environment |
+| [CI](reusable-workflows/ci.md) | Workflow | Full CI pipeline with build, test, lint, deploy |
+| [CI Template](reusable-workflows/ci-template.md) | Reusable Workflow | Lint job that can be called by other workflows |

@@ -1,2 +1,17 @@
 site_name: My Docs
 site_url: https://esmailbenmoussa.github.io/test-ca2/
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - content.code.copy
+
+nav:
+  - Home: index.md
+  - Composite Actions:
+    - Deploy: composite-actions/deploy.md
+  - Reusable Workflows:
+    - CI: reusable-workflows/ci.md
+    - CI Template: reusable-workflows/ci-template.md
